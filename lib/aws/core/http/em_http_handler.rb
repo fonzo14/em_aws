@@ -126,6 +126,10 @@ module AWS
             response.body = http_response.response
             response.status = http_response.response_header.status.to_i
             response.headers = http_response.response_header.to_hash
+            
+            response.headers.each_pair do |k,v|
+              response.headers[k] = [v] unless v.respond_to?(:each)
+            end
           end
         end  
       end
