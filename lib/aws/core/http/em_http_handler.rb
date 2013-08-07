@@ -26,6 +26,7 @@ module AWS
         # @return [Hash] The default options to send to EM-Synchrony on each
         # request.
         attr_reader :default_request_options
+        attr_accessor :async
              
         # Constructs a new HTTP handler using EM-Synchrony.
         #
@@ -40,6 +41,7 @@ module AWS
         def initialize options = {}
           #puts "Using EM-Synchrony for AWS requests"
           @default_request_options = options
+          @async = false
         end
         
         def fetch_url(request)
@@ -89,6 +91,7 @@ module AWS
         end
         
         def fetch_response(url,method,opts={})
+          method = "a#{method}" if @async
           return EM::HttpRequest.new("#{url}").send(method, opts)     
         end
     
